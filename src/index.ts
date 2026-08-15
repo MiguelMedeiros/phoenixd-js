@@ -11,6 +11,7 @@ import {
   PaymentInfo,
   PaymentInfoOutgoing,
   PhoenixConfig,
+  SwapInAddress,
 } from "./types";
 
 class Phoenix {
@@ -188,6 +189,16 @@ class Phoenix {
   async getBalance(): Promise<Balance | null> {
     try {
       const response = await this._http.get("/getbalance");
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
+  async getSwapInAddress(): Promise<SwapInAddress | null> {
+    try {
+      const response = await this._http.get("/getswapinaddress");
       return response.data;
     } catch (error) {
       console.error(error);

@@ -23,6 +23,18 @@ export interface NodeInfo {
 export interface Balance {
   balanceSat: number;
   feeCreditSat: number;
+  swapIn?: SwapInBalance | null;
+}
+
+export interface SwapInBalance {
+  unconfirmedBalanceSat: number;
+  weaklyConfirmedBalanceSat: number;
+  deeplyConfirmedBalanceSat: number;
+}
+
+export interface SwapInAddress {
+  address: string;
+  index: number;
 }
 
 export interface Invoice {

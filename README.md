@@ -55,6 +55,10 @@ const start = async () => {
   const balance = await phoenix.getBalance();
   console.log(balance);
 
+  // phoenixd v0.9+: current on-chain swap-in deposit address
+  const swapInAddress = await phoenix.getSwapInAddress();
+  console.log(swapInAddress);
+
   // Channel Management
   const channels = await phoenix.listChannels();
   console.log(channels);
