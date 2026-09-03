@@ -121,6 +121,7 @@ export type ChannelStates = ChannelState[];
 
 export interface CloseChannelResponse {
   status: "ok" | "error";
+  txId?: string;
   message?: string;
 }
 

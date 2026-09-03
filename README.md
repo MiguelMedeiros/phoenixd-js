@@ -55,6 +55,9 @@ const start = async () => {
   const balance = await phoenix.getBalance();
   console.log(balance);
 
+  // phoenixd v0.9+ includes optional on-chain swap-in balances
+  console.log(balance?.swapIn);
+
   // phoenixd v0.9+: current on-chain swap-in deposit address
   const swapInAddress = await phoenix.getSwapInAddress();
   console.log(swapInAddress);
@@ -68,7 +71,11 @@ const start = async () => {
     address: "your_btc_address",
     feerateSatByte: 1,
   });
-  console.log(closeChannel);
+  if (closeChannel?.status === "ok") {
+    console.log(closeChannel.txId); // closing transaction id
+  } else {
+    console.error(closeChannel?.message);
+  }
 
   // Real-time Notifications
   const websocket = phoenix.websocket();
