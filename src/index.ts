@@ -235,11 +235,17 @@ class Phoenix {
         "/closechannel",
         params.toString()
       );
-      if (response.data === "ok") {
-        return { status: "ok" };
+      if (typeof response.data === "string" && /^[0-9a-f]{64}$/i.test(response.data)) {
+        return { status: "ok", txId: response.data };
       } else {
         console.error(response.data);
-        return { status: "error", message: "Unexpected response" };
+        return {
+          status: "error",
+          message:
+            typeof response.data === "string"
+              ? response.data
+              : "Unexpected response",
+        };
       }
     } catch (error) {
       console.error(error);
