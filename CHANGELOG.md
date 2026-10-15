@@ -9,6 +9,11 @@ All notable changes to this project are documented in this file.
 - `PaymentInfoOutgoing` now matches phoenixd's `outgoing_payment` JSON: adds `subType`, `paymentId` and `txId`, and marks `paymentHash`, `preimage`, `invoice` and `completedAt` optional because phoenixd omits null fields.
 - `getOutgoingPayment()` is documented to return on-chain outgoing payments (channel close, splice, liquidity purchases) as served by phoenixd v0.9.2+.
 
+### Security
+
+- Bump runtime dependencies `axios` to 1.20.0 and `ws` to 8.22.0; `npm audit --omit=dev` reports no vulnerabilities.
+- Move the test toolchain to Jest 30, removing the critical/high advisories reachable through Jest 29.
+
 ## [1.2.0] - 2026-09-03
 
 ### Added
