@@ -100,6 +100,13 @@ const start = async () => {
     feerateSatByte: 12,
   });
   console.log(txId);
+
+  // phoenixd v0.9.2+: look up any outgoing payment by id, including on-chain
+  // ones (subType "channel_close", "splice_out", ... with a txId)
+  const outgoing = await phoenix.getOutgoingPayment({
+    paymentId: "your_payment_id_here",
+  });
+  console.log(outgoing?.subType, outgoing?.txId ?? outgoing?.paymentHash);
 };
 
 start();
