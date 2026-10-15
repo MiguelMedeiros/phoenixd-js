@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented in this file.
 
+## [Unreleased]
+
+### Changed
+
+- `PaymentInfoOutgoing` now matches phoenixd's `outgoing_payment` JSON: adds `subType`, `paymentId` and `txId`, and marks `paymentHash`, `preimage`, `invoice` and `completedAt` optional because phoenixd omits null fields.
+- `getOutgoingPayment()` is documented to return on-chain outgoing payments (channel close, splice, liquidity purchases) as served by phoenixd v0.9.2+.
+
 ## [1.2.0] - 2026-09-03
 
 ### Added

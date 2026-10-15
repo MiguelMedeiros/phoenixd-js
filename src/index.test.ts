@@ -1,10 +1,37 @@
 import axios from "axios";
 
 import Phoenix from "./index";
+import { PaymentInfoOutgoing } from "./types";
 
 jest.mock("axios");
 
 describe("Phoenix v0.9 API compatibility", () => {
+  it("returns on-chain outgoing payments by id (phoenixd v0.9.2+)", async () => {
+    const onChainPayment: PaymentInfoOutgoing = {
+      type: "outgoing_payment",
+      subType: "channel_close",
+      paymentId: "4b0b6c1e-6a4f-4f7e-9a51-3f0f7c2d9e10",
+      txId: "c".repeat(64),
+      isPaid: true,
+      sent: 125000,
+      fees: 1500000,
+      completedAt: 1760000000000,
+      createdAt: 1759999990000,
+    };
+    const get = jest.fn().mockResolvedValue({ data: onChainPayment });
+    (axios.create as jest.Mock).mockReturnValue({ get });
+    const phoenix = new Phoenix({ token: "secret" });
+
+    const payment = await phoenix.getOutgoingPayment({
+      paymentId: onChainPayment.paymentId,
+    });
+
+    expect(payment).toEqual(onChainPayment);
+    expect(get).toHaveBeenCalledWith(
+      `/payments/outgoing/${onChainPayment.paymentId}`
+    );
+  });
+
   it("requests the current swap-in address", async () => {
     const get = jest.fn().mockResolvedValue({
       data: { address: "bc1qswapin", index: 7 },

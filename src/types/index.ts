@@ -56,14 +56,30 @@ export interface PaymentInfo {
   createdAt: number;
 }
 
+export type OutgoingPaymentSubType =
+  | "lightning"
+  | "auto_liquidity"
+  | "manual_liquidity"
+  | "splice_out"
+  | "splice_cpfp"
+  | "channel_close";
+
+// phoenixd v0.9.2+ returns Lightning and on-chain payments from
+// /payments/outgoing/{paymentId}; on-chain entries carry a txId and no
+// paymentHash, preimage or invoice. phoenixd omits null fields from JSON.
 export interface PaymentInfoOutgoing {
-  paymentHash: string;
-  preimage: string;
+  type?: "outgoing_payment";
+  subType: OutgoingPaymentSubType;
+  paymentId: string;
+  paymentHash?: string;
+  preimage?: string;
+  txId?: string;
   isPaid: boolean;
   sent: number;
+  // Fees in millisatoshis.
   fees: number;
-  invoice: string;
-  completedAt: number;
+  invoice?: string;
+  completedAt?: number;
   createdAt: number;
 }
 
