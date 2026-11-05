@@ -11,6 +11,7 @@ All notable changes to this project are documented in this file.
 
 ### Security
 
+- Bump `axios` to 1.21.0 and its transitive `follow-redirects` to 1.16.2, fixing high-severity advisories where credential headers (the phoenixd Basic auth token) could survive cross-origin redirects (GHSA-q3jh-wrc6-jgq8, GHSA-8r9p-f939-6h3c, GHSA-mrwp-f3q8-3g9p).
 - Bump runtime dependencies `axios` to 1.20.0 and `ws` to 8.22.0; `npm audit --omit=dev` reports no vulnerabilities.
 - Move the test toolchain to Jest 30, removing the critical/high advisories reachable through Jest 29.
 
