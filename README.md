@@ -107,6 +107,12 @@ const start = async () => {
     paymentId: "your_payment_id_here",
   });
   console.log(outgoing?.subType, outgoing?.txId ?? outgoing?.paymentHash);
+
+  // Payment history: optional filters map to phoenixd's query params
+  // (from/to in ms, limit defaults to 20, all=true includes unpaid/failed)
+  const received = await phoenix.listIncomingPayments({ externalId: "order-42", limit: 50 });
+  const sent = await phoenix.listOutgoingPayments({ from: Date.now() - 86_400_000, all: true });
+  console.log(received?.length, sent?.length);
 };
 
 start();

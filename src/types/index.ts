@@ -43,6 +43,17 @@ export interface Invoice {
   serialized: string;
 }
 
+// Filters accepted by phoenixd's GET /payments/incoming and /payments/outgoing.
+// Timestamps are milliseconds; phoenixd defaults to limit 20, offset 0 and
+// only paid (incoming) or sent/pending (outgoing) payments unless all=true.
+export interface ListPaymentsParams {
+  from?: number;
+  to?: number;
+  limit?: number;
+  offset?: number;
+  all?: boolean;
+}
+
 export interface PaymentInfo {
   paymentHash: string;
   preimage: string;

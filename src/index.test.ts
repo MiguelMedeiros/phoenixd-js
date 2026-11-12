@@ -84,4 +84,58 @@ describe("Phoenix v0.9 API compatibility", () => {
     );
     consoleError.mockRestore();
   });
+
+  describe("payment listing", () => {
+    it("sends incoming list filters as encoded query params", async () => {
+      const get = jest.fn().mockResolvedValue({ data: [] });
+      (axios.create as jest.Mock).mockReturnValue({ get });
+      const phoenix = new Phoenix({ token: "secret" });
+
+      await expect(
+        phoenix.listIncomingPayments({
+          externalId: "order&all=true#1",
+          from: 1700000000000,
+          to: 1800000000000,
+          limit: 50,
+          offset: 100,
+          all: true,
+        })
+      ).resolves.toEqual([]);
+
+      expect(get).toHaveBeenCalledWith("/payments/incoming", {
+        params: {
+          externalId: "order&all=true#1",
+          from: 1700000000000,
+          to: 1800000000000,
+          limit: 50,
+          offset: 100,
+          all: true,
+        },
+      });
+    });
+
+    it("lists outgoing payments with phoenixd filters", async () => {
+      const payments: PaymentInfoOutgoing[] = [
+        {
+          subType: "lightning",
+          paymentId: "4b0b6c1e-6a4f-4f7e-9a51-3f0f7c2d9e11",
+          paymentHash: "d".repeat(64),
+          isPaid: false,
+          sent: 1000,
+          fees: 0,
+          createdAt: 1760000000000,
+        },
+      ];
+      const get = jest.fn().mockResolvedValue({ data: payments });
+      (axios.create as jest.Mock).mockReturnValue({ get });
+      const phoenix = new Phoenix({ token: "secret" });
+
+      await expect(
+        phoenix.listOutgoingPayments({ limit: 5, all: true })
+      ).resolves.toEqual(payments);
+      expect(get).toHaveBeenCalledWith("/payments/outgoing", {
+        params: { limit: 5, all: true },
+      });
+    });
+  });
 });

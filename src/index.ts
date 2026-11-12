@@ -6,6 +6,7 @@ import {
   ChannelStates,
   CloseChannelResponse,
   Invoice,
+  ListPaymentsParams,
   NodeInfo,
   PayInvoiceResponse,
   PaymentInfo,
@@ -95,15 +96,13 @@ class Phoenix {
     }
   }
 
-  async listIncomingPayments({
-    externalId,
-  }: {
-    externalId: string;
-  }): Promise<PaymentInfo[] | null> {
+  async listIncomingPayments(
+    params: ListPaymentsParams & { externalId?: string } = {}
+  ): Promise<PaymentInfo[] | null> {
     try {
-      const response = await this._http.get(
-        `/payments/incoming?externalId=${externalId}`
-      );
+      const response = await this._http.get("/payments/incoming", {
+        params,
+      });
       return response.data;
     } catch (error) {
       console.error(error);
@@ -120,6 +119,18 @@ class Phoenix {
       const response = await this._http.get(
         `/payments/incoming/${paymentHash}`
       );
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
+  async listOutgoingPayments(
+    params: ListPaymentsParams = {}
+  ): Promise<PaymentInfoOutgoing[] | null> {
+    try {
+      const response = await this._http.get("/payments/outgoing", { params });
       return response.data;
     } catch (error) {
       console.error(error);
