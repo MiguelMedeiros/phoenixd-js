@@ -4,6 +4,15 @@ All notable changes to this project are documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- `listOutgoingPayments()` for phoenixd's `GET /payments/outgoing`, returning Lightning and on-chain outgoing payments.
+- `ListPaymentsParams` (`from`, `to`, `limit`, `offset`, `all`) accepted by both payment-list methods, matching phoenixd's query parameters.
+
+### Fixed
+
+- `listIncomingPayments()` now sends `externalId` as an encoded query parameter instead of interpolating it into the URL, so values containing `&`, `#` or `=` can no longer inject or truncate query parameters. `externalId` is optional, matching phoenixd.
+
 ### Changed
 
 - `PaymentInfoOutgoing` now matches phoenixd's `outgoing_payment` JSON: adds `subType`, `paymentId` and `txId`, and marks `paymentHash`, `preimage`, `invoice` and `completedAt` optional because phoenixd omits null fields.
